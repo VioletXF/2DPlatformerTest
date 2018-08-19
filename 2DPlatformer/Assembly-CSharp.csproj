@@ -55,6 +55,8 @@
   <ItemGroup>
      <Compile Include="Assets\CameraMove.cs" />
      <Compile Include="Assets\CheckPoint.cs" />
+     <Compile Include="Assets\GravitySwitchPoint.cs" />
+     <Compile Include="Assets\MovableObject.cs" />
      <Compile Include="Assets\NewBehaviourScript.cs" />
      <Compile Include="Assets\Portal.cs" />
  <Reference Include="UnityEditor.StandardEvents">

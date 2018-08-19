@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class NewBehaviourScript : MonoBehaviour {
     Rigidbody2D rb;
     Rigidbody2D rborigin;
@@ -32,7 +32,11 @@ public class NewBehaviourScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        isOnFloor=Physics2D.Raycast(transform.position, (rb.gravityScale>0?1:-1)*Vector2.down,distToGround+0.1f,groundLayer).collider!=null;
+        if (Input.GetKeyDown(KeyCode.R)) {
+            Die();
+        }
+        isOnFloor=Physics2D.Raycast(transform.position, (rb.gravityScale > 0 ? 1 : -1) * Vector2.down, distToGround + 0.1f, name == "Red" ? LayerMask.GetMask("Orange") : LayerMask.GetMask("Red"));
+        isOnFloor =isOnFloor||Physics2D.Raycast(transform.position, (rb.gravityScale>0?1:-1)*Vector2.down,distToGround+0.1f,groundLayer).collider!=null;
         if (Mathf.Abs(rb.velocity.x)<=8)
           rb.AddForce(new Vector2(speed*(Input.GetKey(KeyCode.LeftShift)?0.4f:1f) * ((Input.GetKey(KeyCode.A) ? -1.0f : 0.0f) + (Input.GetKey(KeyCode.D) ? 1.0f : 0.0f)), 0));
         else
@@ -52,13 +56,7 @@ public class NewBehaviourScript : MonoBehaviour {
             }
         }
         //Debug.Log("x vel:" + rb.velocity.x);
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            rb.gravityScale = Mathf.Abs(rb.gravityScale)*-1;
-        }else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            rb.gravityScale = Mathf.Abs(rb.gravityScale);
-        }
+       
         if ((rb.gravityScale>=0&&Input.GetKeyDown(KeyCode.S))||(rb.gravityScale<0&&Input.GetKeyDown(KeyCode.W)))
         {
             rb.AddForce(new Vector2(0, -500f * (rb.gravityScale > 0 ? 1f : -1f)));
@@ -78,6 +76,7 @@ public class NewBehaviourScript : MonoBehaviour {
        // Debug.Log("col enter: " + col.collider.tag);
         switch (col.collider.tag)
         {
+            case "movablefloor":
             case "floor":
             case "character":
                 airJump = defAirJump;
